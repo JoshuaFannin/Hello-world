@@ -9,17 +9,20 @@ ctx.verify_mode = ssl.CERT_NONE
 
 link = input('Enter address: ')
 
-json = urllib.request.urlopen(link)
+data = urllib.request.urlopen(link)
 print ('Retrieving: ', link)
 #for data in xml:
-data = json.read()
-print('Retrieved', len(data), 'characters')
-info = json.loads(data)
+info = data.read().decode()
+print('Retrieved', len(info), 'characters')
 
-counts = tree.findall('.//count')
+js = json.loads(info)
+counts=list()
+for u in js['comments']:
+    counts.append(u['count'])
+
 print ('Count: ', len(counts))
 total = 0
 for count in counts:
-    total +=int(count.text)
+    total +=int(count)
 
 print ('Sum: ',total)
